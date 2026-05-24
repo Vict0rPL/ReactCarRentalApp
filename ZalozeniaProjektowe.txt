@@ -1,0 +1,6 @@
+Wymagania projektowe:
+- aplikacja musi się składać z minimum 8 ekranów *
+- należy w aplikacji wykorzystać trzy metody dostępu do danych za pomocą API (GET, POST, PUT) *
+- należy zaimplementować dwa rodzaje nawigacji omawiane na wykładzie *
+- należy użyć wybranego frameworka z gotowymi kontrolkami (antDesign, nativeBase etc.)
+- należy skorzystać z dwóch wybranych sensorów dostępnych z urządzenia (aparat, kamera, akcelerometr) *
