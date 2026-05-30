@@ -1,2 +1,1 @@
-// Zmień na swój URL z MockAPI.io
-export const API_URL = 'https://TWOJ_ID.mockapi.io/api/v1';
+export const API_URL = 'https://69d8ea9f0576c938825a40a6.mockapi.io/Cars';
