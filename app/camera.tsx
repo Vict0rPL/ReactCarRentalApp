@@ -33,7 +33,7 @@ export default function CameraScreen() {
     setCapturing(false);
     if (photo) {
       // Wróć do edycji profilu i przekaż URI zdjęcia jako parametr
-      router.navigate({
+      router.dismissTo({
         pathname: '/edit-profile',
         params: { photoUri: photo.uri },
       });
