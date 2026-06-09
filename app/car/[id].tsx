@@ -21,7 +21,7 @@ export default function CarDetailScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`${API_URL}/cars/${id}`)
+    fetch(`${API_URL}/Cars/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);

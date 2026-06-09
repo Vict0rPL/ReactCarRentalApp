@@ -21,7 +21,7 @@ export default function HomeScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`${API_URL}/cars`)
+    fetch(`${API_URL}/Cars`)
       .then((res) => res.json())
       .then((data) => {
         setCars(data);
