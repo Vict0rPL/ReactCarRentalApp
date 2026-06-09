@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Button, Text, ActivityIndicator, Snackbar } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { API_URL } from '@/constants/api';
 
@@ -21,6 +22,7 @@ export default function ReservationDetailScreen() {
   const [snackVisible, setSnackVisible] = useState(false);
   const [snackMessage, setSnackMessage] = useState('');
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     fetch(`${API_URL}/reservations/${id}`)
@@ -69,7 +71,8 @@ export default function ReservationDetailScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
       <Card>
         <Card.Title title={reservation.carName} />
         <Card.Content>
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    padding: 16,
+    padding: 20,
     gap: 16,
   },
   price: {

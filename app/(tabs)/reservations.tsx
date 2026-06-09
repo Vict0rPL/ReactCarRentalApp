@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Card, ActivityIndicator, Text, Badge } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { API_URL } from '@/constants/api';
 
@@ -17,6 +18,7 @@ export default function ReservationsScreen() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   // useFocusEffect odświeża listę po powrocie z ekranu szczegółów
   useFocusEffect(
@@ -34,7 +36,7 @@ export default function ReservationsScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.center, { paddingTop: insets.top }]}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -42,7 +44,7 @@ export default function ReservationsScreen() {
 
   if (reservations.length === 0) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.center, { paddingTop: insets.top }]}>
         <Text>Brak rezerwacji.</Text>
       </View>
     );
@@ -52,7 +54,7 @@ export default function ReservationsScreen() {
     <FlatList
       data={reservations}
       keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.list}
+      contentContainerStyle={[styles.list, { paddingTop: insets.top + 16 }]}
       renderItem={({ item }) => (
         <Card style={styles.card} onPress={() => router.push(`/reservation/${item.id}`)}>
           <Card.Title
@@ -80,7 +82,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   list: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
   },
   card: {
     marginBottom: 12,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Button, Text, ActivityIndicator } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { API_URL } from '@/constants/api';
 
@@ -19,6 +20,7 @@ export default function CarDetailScreen() {
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     fetch(`${API_URL}/Cars/${id}`)
@@ -47,7 +49,8 @@ export default function CarDetailScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
       <Card>
         <Card.Cover source={{ uri: car.image }} />
         <Card.Content style={styles.content}>
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    padding: 16,
+    padding: 20,
     gap: 16,
   },
   content: {

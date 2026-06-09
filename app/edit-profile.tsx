@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Image, View } from 'react-native';
 import { TextInput, Button, Text, Snackbar } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
@@ -10,6 +11,7 @@ export default function EditProfileScreen() {
   const [photo, setPhoto] = useState('');
   const [snackVisible, setSnackVisible] = useState(false);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   // Aparat zwraca URI zdjęcia przez parametr routera
   const params = useLocalSearchParams<{ photoUri?: string }>();
 
@@ -39,7 +41,8 @@ export default function EditProfileScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
       {photo ? (
         <Image source={{ uri: photo }} style={styles.avatar} />
       ) : (

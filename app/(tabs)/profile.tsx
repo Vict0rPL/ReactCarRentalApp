@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import { Card, Button, Text, ActivityIndicator } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { useRouter, useFocusEffect } from 'expo-router';
@@ -12,6 +13,7 @@ export default function ProfileScreen() {
   const [location, setLocation] = useState('');
   const [loadingLocation, setLoadingLocation] = useState(false);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   // Odświeżaj profil za każdym razem gdy wrócimy na ten ekran
   useFocusEffect(
@@ -45,7 +47,11 @@ export default function ProfileScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        { paddingTop: insets.top + 24, paddingBottom: insets.bottom + 24 },
+      ]}>
       {photo ? (
         <Image source={{ uri: photo }} style={styles.avatar} />
       ) : (

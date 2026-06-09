@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Card, ActivityIndicator, Text } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { API_URL } from '@/constants/api';
 
@@ -19,6 +20,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     fetch(`${API_URL}/Cars`)
@@ -35,7 +37,7 @@ export default function HomeScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.center, { paddingTop: insets.top }]}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -43,7 +45,7 @@ export default function HomeScreen() {
 
   if (error) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.center, { paddingTop: insets.top }]}>
         <Text>{error}</Text>
       </View>
     );
@@ -53,7 +55,7 @@ export default function HomeScreen() {
     <FlatList
       data={cars}
       keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.list}
+      contentContainerStyle={[styles.list, { paddingTop: insets.top + 16 }]}
       renderItem={({ item }) => (
         <Card style={styles.card} onPress={() => router.push(`/car/${item.id}`)}>
           <Card.Cover source={{ uri: item.image }} />
@@ -74,7 +76,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   list: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
   },
   card: {
     marginBottom: 12,
