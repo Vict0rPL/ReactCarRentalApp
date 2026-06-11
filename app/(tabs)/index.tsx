@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Card, ActivityIndicator, Text } from 'react-native-paper';
+import { Card, ActivityIndicator, Text, Searchbar } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { API_URL } from '@/constants/api';
@@ -17,6 +17,7 @@ type Car = {
 
 export default function HomeScreen() {
   const [cars, setCars] = useState<Car[]>([]);
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -51,11 +52,24 @@ export default function HomeScreen() {
     );
   }
 
+  // Filtrujemy listę aut po marce i nazwie (bez rozróżniania wielkości liter)
+  const filtered = cars.filter((car) =>
+    `${car.brand} ${car.name}`.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
     <FlatList
-      data={cars}
+      data={filtered}
       keyExtractor={(item) => item.id}
       contentContainerStyle={[styles.list, { paddingTop: insets.top + 16 }]}
+      ListHeaderComponent={
+        <Searchbar
+          placeholder="Szukaj auta"
+          value={query}
+          onChangeText={setQuery}
+          style={styles.search}
+        />
+      }
       renderItem={({ item }) => (
         <Card style={styles.card} onPress={() => router.push(`/car/${item.id}`)}>
           <Card.Cover source={{ uri: item.image }} />
@@ -78,6 +92,9 @@ const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 16,
     paddingBottom: 16,
+  },
+  search: {
+    marginBottom: 12,
   },
   card: {
     marginBottom: 12,
