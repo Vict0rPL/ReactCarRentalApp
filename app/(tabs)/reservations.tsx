@@ -17,22 +17,31 @@ type Reservation = {
 export default function ReservationsScreen() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
   const insets = useSafeAreaInsets();
+
+  // Pobiera rezerwacje z API
+  const loadReservations = useCallback(() => {
+    return fetch(`${API_URL}/reservations`)
+      .then((res) => res.json())
+      .then((data) => setReservations(data))
+      .catch(() => {});
+  }, []);
 
   // useFocusEffect odświeża listę po powrocie z ekranu szczegółów
   useFocusEffect(
     useCallback(() => {
       setLoading(true);
-      fetch(`${API_URL}/reservations`)
-        .then((res) => res.json())
-        .then((data) => {
-          setReservations(data);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }, [])
+      loadReservations().finally(() => setLoading(false));
+    }, [loadReservations])
   );
+
+  // Pociągnięcie listy w dół odświeża dane
+  function onRefresh() {
+    setRefreshing(true);
+    loadReservations().finally(() => setRefreshing(false));
+  }
 
   if (loading) {
     return (
@@ -54,6 +63,8 @@ export default function ReservationsScreen() {
     <FlatList
       data={reservations}
       keyExtractor={(item) => item.id}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
       contentContainerStyle={[styles.list, { paddingTop: insets.top + 16 }]}
       renderItem={({ item }) => (
         <Card style={styles.card} onPress={() => router.push(`/reservation/${item.id}`)}>
