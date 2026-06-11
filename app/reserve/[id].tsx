@@ -4,6 +4,7 @@ import { TextInput, Button, Text, Snackbar, ActivityIndicator } from 'react-nati
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { API_URL } from '@/constants/api';
+import { calculateDays } from '@/utils/dates';
 
 type Car = {
   id: string;
@@ -29,20 +30,13 @@ export default function NewReservationScreen() {
       .then((data) => setCar(data));
   }, [id]);
 
-  function calculateDays() {
-    const from = new Date(fromDate);
-    const to = new Date(toDate);
-    const diff = Math.ceil((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24));
-    return diff > 0 ? diff : 0;
-  }
-
   function handleReserve() {
     if (!fromDate || !toDate) {
       setSnackMessage('Wpisz datę od i do.');
       setSnackVisible(true);
       return;
     }
-    const days = calculateDays();
+    const days = calculateDays(fromDate, toDate);
     if (days === 0) {
       setSnackMessage('Data końcowa musi być po dacie początkowej.');
       setSnackVisible(true);
@@ -83,7 +77,7 @@ export default function NewReservationScreen() {
     );
   }
 
-  const days = calculateDays();
+  const days = calculateDays(fromDate, toDate);
 
   return (
     <ScrollView
