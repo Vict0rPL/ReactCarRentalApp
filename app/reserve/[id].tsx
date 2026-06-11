@@ -4,7 +4,7 @@ import { TextInput, Button, Text, Snackbar, ActivityIndicator } from 'react-nati
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { API_URL } from '@/constants/api';
-import { calculateDays } from '@/utils/dates';
+import { calculateDays, calculateTotalPrice } from '@/utils/dates';
 
 type Car = {
   id: string;
@@ -42,7 +42,7 @@ export default function NewReservationScreen() {
       setSnackVisible(true);
       return;
     }
-    const totalPrice = days * (car?.price ?? 0);
+    const totalPrice = calculateTotalPrice(fromDate, toDate, car?.price ?? 0);
 
     setSaving(true);
     fetch(`${API_URL}/reservations`, {
@@ -112,7 +112,7 @@ export default function NewReservationScreen() {
         mode="contained"
         onPress={handleReserve}
         loading={saving}
-        disabled={saving}
+        disabled={saving || !fromDate || !toDate}
         style={styles.button}>
         Potwierdź rezerwację
       </Button>
