@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { StyleSheet, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, Linking } from 'react-native';
 import { Card, Button, Text, ActivityIndicator } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -46,6 +46,11 @@ export default function ProfileScreen() {
     });
   }
 
+  // Otwiera pobrane współrzędne w aplikacji map urządzenia
+  function openInMaps() {
+    Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${location}`);
+  }
+
   return (
     <ScrollView
       contentContainerStyle={[
@@ -81,6 +86,9 @@ export default function ProfileScreen() {
         </Card.Content>
         <Card.Actions>
           <Button onPress={getLocation}>Pobierz GPS</Button>
+          {location.includes(',') && (
+            <Button onPress={openInMaps}>Otwórz w mapach</Button>
+          )}
         </Card.Actions>
       </Card>
     </ScrollView>
