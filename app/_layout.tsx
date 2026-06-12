@@ -3,8 +3,11 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { PaperProvider } from 'react-native-paper';
+import { pl, registerTranslation } from 'react-native-paper-dates';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+
+registerTranslation('pl', pl);
 
 export const unstable_settings = {
   anchor: '(tabs)',
